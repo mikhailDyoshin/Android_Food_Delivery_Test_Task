@@ -11,9 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.fooddeliveryapp.presentation.foodListScreen.FoodListScreen
-import com.example.fooddeliveryapp.presentation.foodListScreen.state.MealState
 import com.example.fooddeliveryapp.presentation.foodListScreen.viewModel.FoodListViewModel
 import com.example.fooddeliveryapp.ui.theme.FoodDeliveryAppTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -34,7 +32,7 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     FoodListScreen(
-                        layoutState = viewModel.state
+                        layoutState = viewModel.mealsListState
                     )
                 }
             }
