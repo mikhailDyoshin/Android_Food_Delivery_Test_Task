@@ -91,6 +91,8 @@ dependencies {
 
     // Coin
     implementation("io.coil-kt:coil-compose:2.4.0")
+
+    implementation ("com.google.code.gson:gson:2.8.8")
 }
 
 // Allow references to generated code
