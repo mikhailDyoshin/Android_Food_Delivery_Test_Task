@@ -13,7 +13,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.fooddeliveryapp.presentation.foodListScreen.FoodListScreen
 import com.example.fooddeliveryapp.presentation.foodListScreen.state.FoodState
 import com.example.fooddeliveryapp.ui.theme.FoodDeliveryAppTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
