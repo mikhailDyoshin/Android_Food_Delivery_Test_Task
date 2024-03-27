@@ -3,6 +3,7 @@ package com.example.fooddeliveryapp.presentation
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -10,14 +11,20 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.fooddeliveryapp.presentation.foodListScreen.FoodListScreen
-import com.example.fooddeliveryapp.presentation.foodListScreen.state.FoodState
+import com.example.fooddeliveryapp.presentation.foodListScreen.state.MealState
+import com.example.fooddeliveryapp.presentation.foodListScreen.viewModel.FoodListViewModel
 import com.example.fooddeliveryapp.ui.theme.FoodDeliveryAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    private val viewModel: FoodListViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         setContent {
             FoodDeliveryAppTheme {
@@ -27,60 +34,7 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     FoodListScreen(
-                        listOf(
-                            FoodState(
-                                title = "Pizza",
-                                description = "Tasty very much"
-                            ),
-                            FoodState(
-                                title = "Pizza",
-                                description = "Tasty very much"
-                            ),
-                            FoodState(
-                                title = "Pizza",
-                                description = "Tasty very much"
-                            ),
-                            FoodState(
-                                title = "Pizza",
-                                description = "Tasty very much"
-                            ),
-                            FoodState(
-                                title = "Pizza",
-                                description = "Tasty very much"
-                            ),
-                            FoodState(
-                                title = "Pizza",
-                                description = "Tasty very much"
-                            ),
-                            FoodState(
-                                title = "Pizza",
-                                description = "Tasty very much"
-                            ),
-                            FoodState(
-                                title = "Pizza",
-                                description = "Tasty very much"
-                            ),
-                            FoodState(
-                                title = "Pizza",
-                                description = "Tasty very much"
-                            ),
-                            FoodState(
-                                title = "Pizza",
-                                description = "Tasty very much"
-                            ),
-                            FoodState(
-                                title = "Pizza",
-                                description = "Tasty very much"
-                            ),
-                            FoodState(
-                                title = "Pizza",
-                                description = "Tasty very much"
-                            ),
-                            FoodState(
-                                title = "Pizza",
-                                description = "Tasty very much"
-                            )
-                        )
+                        layoutState = viewModel.state
                     )
                 }
             }

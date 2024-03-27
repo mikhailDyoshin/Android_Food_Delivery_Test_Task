@@ -1,7 +1,9 @@
 package com.example.fooddeliveryapp.di
 
 import com.example.fooddeliveryapp.common.BASE_URL
+import com.example.fooddeliveryapp.data.repository.FoodDeliveryAppRepositoryImpl
 import com.example.fooddeliveryapp.data.storage.FoodDeliveryAppApi
+import com.example.fooddeliveryapp.domain.repository.FoodDeliveryAppRepository
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
@@ -29,6 +31,14 @@ object AppModule {
             .addConverterFactory(MoshiConverterFactory.create(moshi))
             .build()
             .create(FoodDeliveryAppApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideFoodDeliveryAppRepository(
+        api: FoodDeliveryAppApi
+    ): FoodDeliveryAppRepository {
+        return FoodDeliveryAppRepositoryImpl(api)
     }
 
 }

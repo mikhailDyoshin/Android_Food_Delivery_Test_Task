@@ -11,18 +11,18 @@ class FoodDeliveryAppRepositoryImpl @Inject constructor(private val api: FoodDel
     override suspend fun getMeals(): List<MealDomainModel> {
         return api.getMeals().meals.map {
             MealDomainModel(
-                id = it.idMeal,
-                name = it.strMeal,
-                description = it.strInstructions,
-                category = it.strCategory,
-                imageUrl = it.strMealThumb
+                id = it.idMeal ?: "00000",
+                name = it.strMeal ?: "No title",
+                description = it.strInstructions ?: "No description",
+                category = it.strCategory ?: "No category",
+                imageUrl = it.strMealThumb ?: "No url"
             )
         }
     }
 
     override suspend fun getCategories(): List<CategoryDomainModel> {
         return api.getCategories().categories.map {
-            CategoryDomainModel(category = it.strCategory)
+            CategoryDomainModel(category = it.strCategory ?: "No category")
         }
     }
 }

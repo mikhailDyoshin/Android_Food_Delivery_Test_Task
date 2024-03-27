@@ -70,8 +70,8 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
 
     // Dagger Hilt
-    implementation("com.google.dagger:hilt-android:2.42")
-    kapt("com.google.dagger:hilt-android-compiler:2.42")
+    implementation("com.google.dagger:hilt-android:2.51")
+    kapt("com.google.dagger:hilt-android-compiler:2.51")
 
     // ViewModel
     implementation("androidx.compose.ui:ui-tooling:1.5.1")

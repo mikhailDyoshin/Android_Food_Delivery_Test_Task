@@ -7,10 +7,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.fooddeliveryapp.presentation.foodListScreen.state.FoodState
+import com.example.fooddeliveryapp.presentation.foodListScreen.state.MealState
 
 @Composable
-fun FoodItem(state: FoodState) {
+fun FoodItem(state: MealState) {
     Column(modifier = Modifier
         .fillMaxWidth()
         .padding(vertical = 5.dp, horizontal = 10.dp)) {
