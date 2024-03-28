@@ -33,7 +33,7 @@ class MainActivity : ComponentActivity() {
                 ) {
                     FoodListScreen(
                         mealsListState = viewModel.mealsListState.value,
-                        categoriesState = viewModel.categoriesListState
+                        categoriesState = viewModel.categoriesListState.value
                     )
                 }
             }

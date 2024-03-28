@@ -25,12 +25,13 @@ class FoodListViewModel @Inject constructor(
     ViewModel() {
 
     private val _mealsListState = mutableStateOf(Resource.success(data = listOf<MealState>()))
-    private val _categoriesListState = mutableStateListOf<CategoryState>()
+    private val _categoriesListState = mutableStateOf(Resource.success(data = listOf<CategoryState>()))
 
     val mealsListState: State<Resource<List<MealState>>> = _mealsListState
-    val categoriesListState: SnapshotStateList<CategoryState> = _categoriesListState
+    val categoriesListState: State<Resource<List<CategoryState>>> = _categoriesListState
 
     init {
+        getCategories()
         getMeals()
     }
 
@@ -72,5 +73,44 @@ class FoodListViewModel @Inject constructor(
                         }
                     }
                 }.launchIn(viewModelScope)
+    }
+
+    private fun getCategories() {
+        getCategoriesUseCase.execute().onEach { result ->
+            when (result.status) {
+                Resource.Status.LOADING -> {
+                    _categoriesListState.value = Resource.loading(
+                        data = emptyList()
+                    )
+                }
+
+                Resource.Status.SUCCESS -> {
+                    if (result.data == null) {
+                        _categoriesListState.value = Resource.error(
+                            error = Resource.Error.ERROR_NO_DATA,
+                            data = emptyList()
+                        )
+                    } else {
+                        val data = result.data
+                        _categoriesListState.value = Resource.success(
+                            data = data.map {
+                                CategoryState(
+                                    category = it.category,
+                                )
+                            })
+
+                    }
+                }
+
+                Resource.Status.ERROR -> {
+                    val error = result.error ?: Resource.Error.ERROR_UNDEFINED
+
+                    _categoriesListState.value = Resource.error(
+                        error = error,
+                        data = emptyList()
+                    )
+                }
+            }
+        }.launchIn(viewModelScope)
     }
 }

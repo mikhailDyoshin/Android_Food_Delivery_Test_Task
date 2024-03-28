@@ -11,17 +11,29 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.example.fooddeliveryapp.common.Resource
 import com.example.fooddeliveryapp.presentation.foodListScreen.state.CategoryState
 
 @Composable
-fun CategoryBar(categories: List<CategoryState>) {
+fun CategoryBar(categories: Resource<List<CategoryState>>) {
     LazyRow(modifier = Modifier
         .fillMaxWidth()
         .height(40.dp)
         .background(color = Color.Gray)) {
-        items(categories) {
-            category ->
-            Text(text = category.category, modifier = Modifier.padding(horizontal = 5.dp))
+        when(categories.status) {
+            Resource.Status.LOADING -> {
+
+            }
+            Resource.Status.SUCCESS -> {
+                items(categories.data ?: emptyList()) {
+                        category ->
+                    Text(text = category.category, modifier = Modifier.padding(horizontal = 5.dp))
+                }
+            }
+            Resource.Status.ERROR -> {
+
+            }
         }
+
     }
 }

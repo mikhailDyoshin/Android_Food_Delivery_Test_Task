@@ -26,7 +26,7 @@ import com.example.fooddeliveryapp.presentation.foodListScreen.state.CategorySta
 import com.example.fooddeliveryapp.presentation.foodListScreen.state.MealState
 
 @Composable
-fun FoodListScreen(mealsListState: Resource<List<MealState>>, categoriesState: List<CategoryState>) {
+fun FoodListScreen(mealsListState: Resource<List<MealState>>, categoriesState: Resource<List<CategoryState>>) {
     val listState = rememberLazyListState()
     val overlapHeightPx = with(LocalDensity.current) {
         EXPANDED_TOP_BAR_HEIGHT.toPx() - COLLAPSED_TOP_BAR_HEIGHT.toPx()
