@@ -7,8 +7,8 @@ import kotlinx.coroutines.flow.Flow
 
 interface FoodDeliveryAppRepository {
 
-    suspend fun getMeals(): Flow<Resource<List<MealDomainModel>>>
+    fun getMeals(): Flow<Resource<List<MealDomainModel>>>
 
-    suspend fun getCategories() : Flow<Resource<List<CategoryDomainModel>>>
+    fun getCategories() : Flow<Resource<List<CategoryDomainModel>>>
 
 }

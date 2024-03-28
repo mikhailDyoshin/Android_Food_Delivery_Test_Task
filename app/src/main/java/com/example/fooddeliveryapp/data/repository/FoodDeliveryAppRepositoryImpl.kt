@@ -16,10 +16,10 @@ import javax.inject.Inject
 
 class FoodDeliveryAppRepositoryImpl @Inject constructor(private val api: FoodDeliveryAppApi) :
     FoodDeliveryAppRepository {
-    override suspend fun getMeals(): Flow<Resource<List<MealDomainModel>>> =
+    override fun getMeals(): Flow<Resource<List<MealDomainModel>>> =
         handleResponse(apiCall = { api.getMeals() }, modelMapper = { mealMapper(it) })
 
-    override suspend fun getCategories(): Flow<Resource<List<CategoryDomainModel>>> =
+    override fun getCategories(): Flow<Resource<List<CategoryDomainModel>>> =
         handleResponse(apiCall = { api.getCategories() }, modelMapper = { categoryMapper(it) })
 
     private fun mealMapper(mealsResponse: MealsResponse): List<MealDomainModel> {
@@ -57,7 +57,6 @@ class FoodDeliveryAppRepositoryImpl @Inject constructor(private val api: FoodDel
                 if (response.isSuccessful) {
                     val body = response.body()
                     if (body != null) {
-                        Log.d("403 error", "Error: ${response.raw()}")
                         emit(
                             Resource.success(
                                 data = modelMapper(body)
@@ -70,7 +69,6 @@ class FoodDeliveryAppRepositoryImpl @Inject constructor(private val api: FoodDel
                         401 -> emit(Resource.error(error = Resource.Error.ERROR_401))
                         403 -> {
                             emit(Resource.error(error = Resource.Error.ERROR_403))
-                            Log.d("403 error", "Error: $errorMessage")
                         }
 
                         404 -> emit(Resource.error(error = Resource.Error.ERROR_404))

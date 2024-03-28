@@ -7,8 +7,8 @@ import javax.inject.Inject
 
 class GetMealsByCategoryUseCase @Inject constructor(private val repository: FoodDeliveryAppRepository) {
 
-    suspend fun execute(category: CategoryDomainModel): List<MealDomainModel> {
-        return repository.getMeals().filter { it.category == category.category }
-    }
+//    suspend fun execute(category: CategoryDomainModel): List<MealDomainModel> {
+//        return repository.getMeals().filter { it.category == category.category }
+//    }
 
 }
