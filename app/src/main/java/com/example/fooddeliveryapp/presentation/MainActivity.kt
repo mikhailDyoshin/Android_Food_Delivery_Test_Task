@@ -32,7 +32,8 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     FoodListScreen(
-                        layoutState = viewModel.mealsListState
+                        mealsListState = viewModel.mealsListState,
+                        categoriesState = viewModel.categoriesListState
                     )
                 }
             }

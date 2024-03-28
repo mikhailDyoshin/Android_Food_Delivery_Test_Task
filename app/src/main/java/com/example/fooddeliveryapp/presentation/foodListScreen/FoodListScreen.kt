@@ -19,10 +19,11 @@ import com.example.fooddeliveryapp.presentation.foodListScreen.components.Catego
 import com.example.fooddeliveryapp.presentation.foodListScreen.components.ExpandedTopBar
 import com.example.fooddeliveryapp.presentation.foodListScreen.components.CollapsedTopBar
 import com.example.fooddeliveryapp.presentation.foodListScreen.components.FoodItem
+import com.example.fooddeliveryapp.presentation.foodListScreen.state.CategoryState
 import com.example.fooddeliveryapp.presentation.foodListScreen.state.MealState
 
 @Composable
-fun FoodListScreen(layoutState: List<MealState>) {
+fun FoodListScreen(mealsListState: List<MealState>, categoriesState: List<CategoryState>) {
     val listState = rememberLazyListState()
     val overlapHeightPx = with(LocalDensity.current) {
         EXPANDED_TOP_BAR_HEIGHT.toPx() - COLLAPSED_TOP_BAR_HEIGHT.toPx()
@@ -35,11 +36,11 @@ fun FoodListScreen(layoutState: List<MealState>) {
         }
     }
     Box {
-        CollapsedTopBar(modifier = Modifier.zIndex(2f), isCollapsed = isCollapsed.value)
+        CollapsedTopBar(modifier = Modifier.zIndex(2f), categories = categoriesState, isCollapsed = isCollapsed.value)
         LazyColumn(state = listState) {
             item { ExpandedTopBar() }
-            item { CategoryBar() }
-            items(items = layoutState) { food ->
+            item { CategoryBar(categoriesState) }
+            items(items = mealsListState) { food ->
                 FoodItem(state = food)
                 Spacer(modifier = Modifier.height(24.dp))
             }

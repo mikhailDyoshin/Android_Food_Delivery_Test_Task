@@ -5,10 +5,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.example.fooddeliveryapp.presentation.foodListScreen.state.CategoryState
 
 @Composable
 fun CollapsedTopBar(
     modifier: Modifier = Modifier,
+    categories: List<CategoryState>,
     isCollapsed: Boolean
 ) {
     Box(
@@ -16,6 +18,6 @@ fun CollapsedTopBar(
             .fillMaxWidth(),
         contentAlignment = Alignment.BottomStart
     ) {
-        if (isCollapsed) CategoryBar()
+        if (isCollapsed) CategoryBar(categories)
     }
 }
