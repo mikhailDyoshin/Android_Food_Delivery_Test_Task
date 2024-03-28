@@ -13,8 +13,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
-import com.example.fooddeliveryapp.common.COLLAPSED_TOP_BAR_HEIGHT
-import com.example.fooddeliveryapp.common.EXPANDED_TOP_BAR_HEIGHT
+import com.example.fooddeliveryapp.common.Constants.COLLAPSED_TOP_BAR_HEIGHT
+import com.example.fooddeliveryapp.common.Constants.EXPANDED_TOP_BAR_HEIGHT
 import com.example.fooddeliveryapp.presentation.foodListScreen.components.CategoryBar
 import com.example.fooddeliveryapp.presentation.foodListScreen.components.ExpandedTopBar
 import com.example.fooddeliveryapp.presentation.foodListScreen.components.CollapsedTopBar

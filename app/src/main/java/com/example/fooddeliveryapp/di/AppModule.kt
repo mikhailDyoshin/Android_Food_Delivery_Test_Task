@@ -1,6 +1,6 @@
 package com.example.fooddeliveryapp.di
 
-import com.example.fooddeliveryapp.common.BASE_URL
+import com.example.fooddeliveryapp.common.Constants.BASE_URL
 import com.example.fooddeliveryapp.data.repository.FoodDeliveryAppRepositoryImpl
 import com.example.fooddeliveryapp.data.storage.FoodDeliveryAppApi
 import com.example.fooddeliveryapp.domain.repository.FoodDeliveryAppRepository
