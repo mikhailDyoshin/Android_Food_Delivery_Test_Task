@@ -11,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.fooddeliveryapp.presentation.customToolbar.CustomToolbarDemo
 import com.example.fooddeliveryapp.presentation.foodListScreen.FoodListScreen
 import com.example.fooddeliveryapp.presentation.foodListScreen.viewModel.FoodListViewModel
 import com.example.fooddeliveryapp.ui.theme.FoodDeliveryAppTheme
@@ -31,10 +32,11 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    FoodListScreen(
-                        mealsListState = viewModel.mealsListState.value,
-                        categoriesState = viewModel.categoriesListState.value
-                    )
+//                    FoodListScreen(
+//                        mealsListState = viewModel.mealsListState.value,
+//                        categoriesState = viewModel.categoriesListState.value
+//                    )
+                    CustomToolbarDemo()
                 }
             }
         }
