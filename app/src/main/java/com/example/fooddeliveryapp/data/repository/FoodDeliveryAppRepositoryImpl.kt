@@ -9,8 +9,6 @@ import com.example.fooddeliveryapp.data.storage.FoodDeliveryAppApi
 import com.example.fooddeliveryapp.data.storage.database.dao.CategoriesDao
 import com.example.fooddeliveryapp.data.storage.database.dao.DaoInterface
 import com.example.fooddeliveryapp.data.storage.database.dao.MealsDao
-import com.example.fooddeliveryapp.data.storage.models.CategoryResponse
-import com.example.fooddeliveryapp.data.storage.models.MealsResponse
 import com.example.fooddeliveryapp.domain.models.CategoryDomainModel
 import com.example.fooddeliveryapp.domain.models.MealDomainModel
 import com.example.fooddeliveryapp.domain.repository.FoodDeliveryAppRepository
@@ -43,27 +41,8 @@ class FoodDeliveryAppRepositoryImpl @Inject constructor(
         return MealModelMapper().databaseToDomain(mealsDao.getAll())
     }
 
-
-    private fun mealMapper(mealsResponse: MealsResponse): List<MealDomainModel> {
-        val mealsList = mealsResponse.meals
-        return mealsList.map { meal ->
-            MealDomainModel(
-                id = meal.idMeal ?: "00000",
-                name = meal.strMeal ?: "No title",
-                description = meal.strInstructions ?: "No description",
-                category = meal.strCategory ?: "No category",
-                imageUrl = meal.strMealThumb ?: "No url"
-            )
-        }
-    }
-
-    private fun categoryMapper(categoryResponse: CategoryResponse): List<CategoryDomainModel> {
-        val categoriesList = categoryResponse.categories
-        return categoriesList.map { category ->
-            CategoryDomainModel(
-                category = category.strCategory ?: "No category"
-            )
-        }
+    override fun getCategoriesFromDatabase(): List<CategoryDomainModel> {
+        return CategoryModelMapper().databaseToDomain(categoriesDao.getAll())
     }
 
     private fun <API, DOMAIN, DATABASE> handleResponse(
@@ -90,7 +69,6 @@ class FoodDeliveryAppRepositoryImpl @Inject constructor(
                         modelMapper.apiToDatabase(body).forEach { daoInterface.insert(it) }
                     }
                 } else {
-                    val errorMessage = response.raw()
                     when (response.code()) {
                         401 -> emit(Resource.error(error = Resource.Error.ERROR_401))
                         403 -> {

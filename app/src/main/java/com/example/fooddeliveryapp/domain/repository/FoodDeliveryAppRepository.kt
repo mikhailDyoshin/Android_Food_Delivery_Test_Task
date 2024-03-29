@@ -13,5 +13,6 @@ interface FoodDeliveryAppRepository {
 
     fun getMealsFromDatabase(): List<MealDomainModel>
 
+    fun getCategoriesFromDatabase() : List<CategoryDomainModel>
 
 }
