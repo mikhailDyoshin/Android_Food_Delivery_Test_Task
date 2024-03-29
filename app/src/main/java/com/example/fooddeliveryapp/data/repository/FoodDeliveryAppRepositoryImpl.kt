@@ -39,6 +39,10 @@ class FoodDeliveryAppRepositoryImpl @Inject constructor(
             daoInterface = categoriesDao
         )
 
+    override fun getMealsFromDatabase(): List<MealDomainModel> {
+        return MealModelMapper().databaseToDomain(mealsDao.getAll())
+    }
+
 
     private fun mealMapper(mealsResponse: MealsResponse): List<MealDomainModel> {
         val mealsList = mealsResponse.meals
@@ -101,10 +105,12 @@ class FoodDeliveryAppRepositoryImpl @Inject constructor(
             } catch (e: IOException) {
                 // If there is no internet connection, emmit data stored in the database
                 emit(
-                    Resource.success(
-                        data = modelMapper.databaseToDomain(daoInterface.getAll())
+                    Resource.error(
+                        error = Resource.Error.ERROR_NO_INTERNET_CONNECTION
                     )
                 )
             }
         }
+
+
 }

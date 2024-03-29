@@ -11,4 +11,7 @@ interface FoodDeliveryAppRepository {
 
     fun getCategories() : Flow<Resource<List<CategoryDomainModel>>>
 
+    fun getMealsFromDatabase(): List<MealDomainModel>
+
+
 }

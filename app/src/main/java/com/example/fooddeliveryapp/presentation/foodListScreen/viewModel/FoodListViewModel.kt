@@ -1,17 +1,17 @@
 package com.example.fooddeliveryapp.presentation.foodListScreen.viewModel
 
 import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.fooddeliveryapp.common.Resource
 import com.example.fooddeliveryapp.domain.usecases.GetCategoriesUseCase
+import com.example.fooddeliveryapp.domain.usecases.GetMealsFromDatabaseUseCase
 import com.example.fooddeliveryapp.domain.usecases.GetMealsUseCase
 import com.example.fooddeliveryapp.presentation.foodListScreen.state.CategoryState
 import com.example.fooddeliveryapp.presentation.foodListScreen.state.MealState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -21,6 +21,7 @@ import javax.inject.Inject
 class FoodListViewModel @Inject constructor(
     private val getMealsUseCase: GetMealsUseCase,
     private val getCategoriesUseCase: GetCategoriesUseCase,
+    private val getMealsFromDatabaseUseCase: GetMealsFromDatabaseUseCase,
 ) :
     ViewModel() {
 
@@ -31,7 +32,7 @@ class FoodListViewModel @Inject constructor(
     val categoriesListState: State<Resource<List<CategoryState>>> = _categoriesListState
 
     init {
-        getCategories()
+//        getCategories()
         getMeals()
     }
 
@@ -64,12 +65,19 @@ class FoodListViewModel @Inject constructor(
                         }
 
                         Resource.Status.ERROR -> {
-                            val error = result.error ?: Resource.Error.ERROR_UNDEFINED
 
-                            _mealsListState.value = Resource.error(
-                                error = error,
-                                data = emptyList()
-                            )
+                            if (result.error == Resource.Error.ERROR_NO_INTERNET_CONNECTION) {
+                                getMealsFromDatabase()
+                            } else {
+                                val error = result.error ?: Resource.Error.ERROR_UNDEFINED
+
+                                _mealsListState.value = Resource.error(
+                                    error = error,
+                                    data = emptyList()
+                                )
+                            }
+
+
                         }
                     }
                 }.launchIn(viewModelScope)
@@ -112,5 +120,19 @@ class FoodListViewModel @Inject constructor(
                 }
             }
         }.launchIn(viewModelScope)
+    }
+
+    private fun getMealsFromDatabase() {
+        viewModelScope.launch(Dispatchers.IO) {
+           val listOfMeals = getMealsFromDatabaseUseCase.execute()
+            _mealsListState.value = Resource.success(
+                data = listOfMeals.map {
+                    MealState(
+                        title = it.name,
+                        description = it.description
+                    )
+                })
+        }
+
     }
 }
