@@ -5,7 +5,6 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.fooddeliveryapp.data.storage.database.models.CategoryDatabaseModel
-import com.example.fooddeliveryapp.data.storage.database.models.MealDatabaseModel
 
 @Dao
 interface CategoriesDao {
