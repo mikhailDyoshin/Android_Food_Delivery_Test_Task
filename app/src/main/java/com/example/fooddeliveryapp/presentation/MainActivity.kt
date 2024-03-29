@@ -32,11 +32,11 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-//                    FoodListScreen(
-//                        mealsListState = viewModel.mealsListState.value,
-//                        categoriesState = viewModel.categoriesListState.value
-//                    )
-                    CustomToolbarDemo()
+                    FoodListScreen(
+                        mealsListState = viewModel.mealsListState.value,
+                        categoriesState = viewModel.categoriesListState.value
+                    )
+//                    CustomToolbarDemo()
                 }
             }
         }

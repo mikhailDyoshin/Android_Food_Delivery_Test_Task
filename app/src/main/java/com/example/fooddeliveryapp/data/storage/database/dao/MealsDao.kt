@@ -7,12 +7,12 @@ import androidx.room.Query
 import com.example.fooddeliveryapp.data.storage.database.models.MealDatabaseModel
 
 @Dao
-interface MealsDao {
+interface MealsDao : DaoInterface<MealDatabaseModel> {
 
     @Insert(onConflict = OnConflictStrategy.ABORT)
-    suspend fun insert(meal: MealDatabaseModel): Long
+    override suspend fun insert(model: MealDatabaseModel): Long
 
     @Query("SELECT * FROM meals")
-    fun getAll() : List<MealDatabaseModel>
+    override fun getAll() : List<MealDatabaseModel>
 
 }

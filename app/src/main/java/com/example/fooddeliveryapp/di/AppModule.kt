@@ -3,6 +3,8 @@ package com.example.fooddeliveryapp.di
 import com.example.fooddeliveryapp.common.Constants.BASE_URL
 import com.example.fooddeliveryapp.data.repository.FoodDeliveryAppRepositoryImpl
 import com.example.fooddeliveryapp.data.storage.FoodDeliveryAppApi
+import com.example.fooddeliveryapp.data.storage.database.dao.CategoriesDao
+import com.example.fooddeliveryapp.data.storage.database.dao.MealsDao
 import com.example.fooddeliveryapp.domain.repository.FoodDeliveryAppRepository
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -36,9 +38,15 @@ object AppModule {
     @Provides
     @Singleton
     fun provideFoodDeliveryAppRepository(
-        api: FoodDeliveryAppApi
+        api: FoodDeliveryAppApi,
+        mealsDao: MealsDao,
+        categoriesDao: CategoriesDao,
     ): FoodDeliveryAppRepository {
-        return FoodDeliveryAppRepositoryImpl(api)
+        return FoodDeliveryAppRepositoryImpl(
+            api = api,
+            mealsDao = mealsDao,
+            categoriesDao = categoriesDao
+        )
     }
 
 }
