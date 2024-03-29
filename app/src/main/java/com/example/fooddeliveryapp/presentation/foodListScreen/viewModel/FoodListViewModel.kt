@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.fooddeliveryapp.common.Resource
+import com.example.fooddeliveryapp.domain.models.MealDomainModel
 import com.example.fooddeliveryapp.domain.usecases.GetCategoriesFromDatabaseUseCase
 import com.example.fooddeliveryapp.domain.usecases.GetCategoriesUseCase
 import com.example.fooddeliveryapp.domain.usecases.GetMealsFromDatabaseUseCase
@@ -38,6 +39,55 @@ class FoodListViewModel @Inject constructor(
         getCategories()
         getMeals()
     }
+
+    fun filterMeals(category: CategoryState) {
+        getMealsUseCase.execute().onEach { result ->
+            when (result.status) {
+                Resource.Status.LOADING -> {
+                    _mealsListState.value = Resource.loading(
+                        data = emptyList()
+                    )
+                }
+
+                Resource.Status.SUCCESS -> {
+                    if (result.data == null) {
+                        _mealsListState.value = Resource.error(
+                            error = Resource.Error.ERROR_NO_DATA,
+                            data = emptyList()
+                        )
+                    } else {
+                        val data = result.data.filter { it.category == category.category }
+                        _mealsListState.value = Resource.success(
+                            data = data.map {
+                                MealState(
+                                    title = it.name,
+                                    description = it.description
+                                )
+                            })
+
+                    }
+                }
+
+                Resource.Status.ERROR -> {
+
+                    if (result.error == Resource.Error.ERROR_NO_INTERNET_CONNECTION) {
+                        getFilteredMealsFromDatabase(category = category.category)
+                    } else {
+                        val error = result.error ?: Resource.Error.ERROR_UNDEFINED
+
+                        _mealsListState.value = Resource.error(
+                            error = error,
+                            data = emptyList()
+                        )
+                    }
+
+
+                }
+            }
+        }.launchIn(viewModelScope)
+    }
+
+
 
     private fun getMeals() {
         getMealsUseCase.execute().onEach { result ->
@@ -150,6 +200,19 @@ class FoodListViewModel @Inject constructor(
                 data = listOfCategories.map {
                     CategoryState(
                         category = it.category
+                    )
+                })
+        }
+    }
+
+    private fun getFilteredMealsFromDatabase(category: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val listOfMeals = getMealsFromDatabaseUseCase.execute().filter { it.category == category }
+            _mealsListState.value = Resource.success(
+                data = listOfMeals.map {
+                    MealState(
+                        title = it.name,
+                        description = it.description
                     )
                 })
         }
