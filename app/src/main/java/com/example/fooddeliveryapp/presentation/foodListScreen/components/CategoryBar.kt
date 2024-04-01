@@ -15,21 +15,29 @@ import com.example.fooddeliveryapp.common.Resource
 import com.example.fooddeliveryapp.presentation.foodListScreen.state.CategoryState
 
 @Composable
-fun CategoryBar(categories: Resource<List<CategoryState>>) {
-    LazyRow(modifier = Modifier
-        .fillMaxWidth()
-        .height(40.dp)
-        .background(color = Color.Gray)) {
-        when(categories.status) {
+fun CategoryBar(
+    categories: Resource<List<CategoryState>>,
+    filterItems: (category: CategoryState) -> Unit
+) {
+    LazyRow(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(40.dp)
+            .background(color = Color.Gray)
+    ) {
+        when (categories.status) {
             Resource.Status.LOADING -> {
 
             }
+
             Resource.Status.SUCCESS -> {
-                items(categories.data ?: emptyList()) {
-                        category ->
-                    Text(text = category.category, modifier = Modifier.padding(horizontal = 5.dp))
+                items(categories.data ?: emptyList()) { category ->
+                    CategoryItem(
+                        category,
+                        onClick = { categoryValue -> filterItems(categoryValue) })
                 }
             }
+
             Resource.Status.ERROR -> {
 
             }

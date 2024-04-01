@@ -12,13 +12,14 @@ import com.example.fooddeliveryapp.presentation.foodListScreen.state.CategorySta
 fun CollapsedTopBar(
     modifier: Modifier = Modifier,
     categories: Resource<List<CategoryState>>,
-    isCollapsed: Boolean
+    isCollapsed: Boolean,
+    filterItems: (category: CategoryState) -> Unit
 ) {
     Box(
         modifier = modifier
             .fillMaxWidth(),
         contentAlignment = Alignment.BottomStart
     ) {
-        if (isCollapsed) CategoryBar(categories)
+        if (isCollapsed) CategoryBar(categories, filterItems = { categoryValue -> filterItems(categoryValue) })
     }
 }

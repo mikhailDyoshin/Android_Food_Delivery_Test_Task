@@ -8,7 +8,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -26,7 +25,11 @@ import com.example.fooddeliveryapp.presentation.foodListScreen.state.CategorySta
 import com.example.fooddeliveryapp.presentation.foodListScreen.state.MealState
 
 @Composable
-fun FoodListScreen(mealsListState: Resource<List<MealState>>, categoriesState: Resource<List<CategoryState>>) {
+fun FoodListScreen(
+    mealsListState: Resource<List<MealState>>,
+    categoriesState: Resource<List<CategoryState>>,
+    filterItems: (category: CategoryState) -> Unit
+) {
     val listState = rememberLazyListState()
     val overlapHeightPx = with(LocalDensity.current) {
         EXPANDED_TOP_BAR_HEIGHT.toPx() - COLLAPSED_TOP_BAR_HEIGHT.toPx()
@@ -39,20 +42,31 @@ fun FoodListScreen(mealsListState: Resource<List<MealState>>, categoriesState: R
         }
     }
     Box {
-        CollapsedTopBar(modifier = Modifier.zIndex(2f), categories = categoriesState, isCollapsed = isCollapsed.value)
+        CollapsedTopBar(
+            modifier = Modifier.zIndex(2f),
+            categories = categoriesState,
+            isCollapsed = isCollapsed.value,
+            filterItems = { categoryValue -> filterItems(categoryValue) }
+        )
         LazyColumn(state = listState) {
             item { ExpandedTopBar() }
-            item { CategoryBar(categoriesState) }
+            item {
+                CategoryBar(
+                    categoriesState,
+                    filterItems = { categoryValue -> filterItems(categoryValue) })
+            }
             when (mealsListState.status) {
                 Resource.Status.LOADING -> {
                     item { Text(text = "Loading...") }
                 }
+
                 Resource.Status.SUCCESS -> {
                     items(items = mealsListState.data ?: emptyList()) { food ->
                         FoodItem(state = food)
                         Spacer(modifier = Modifier.height(24.dp))
                     }
                 }
+
                 Resource.Status.ERROR -> {
                     item { Text(text = "Error") }
                 }

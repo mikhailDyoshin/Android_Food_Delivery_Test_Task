@@ -11,7 +11,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.fooddeliveryapp.presentation.customToolbar.CustomToolbarDemo
 import com.example.fooddeliveryapp.presentation.foodListScreen.FoodListScreen
 import com.example.fooddeliveryapp.presentation.foodListScreen.viewModel.FoodListViewModel
 import com.example.fooddeliveryapp.ui.theme.FoodDeliveryAppTheme
@@ -34,7 +33,8 @@ class MainActivity : ComponentActivity() {
                 ) {
                     FoodListScreen(
                         mealsListState = viewModel.mealsListState.value,
-                        categoriesState = viewModel.categoriesListState.value
+                        categoriesState = viewModel.categoriesListState.value,
+                        filterItems = { categoryValue -> viewModel.filterMeals(categoryValue) }
                     )
 //                    CustomToolbarDemo()
                 }
