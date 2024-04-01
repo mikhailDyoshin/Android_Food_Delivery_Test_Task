@@ -13,5 +13,9 @@ val Pink40 = Color(0xFF7D5260)
 val CategoryTextColor = Color(0xFFC3C4C9)
 val CategorySelectedTextColor = Color(0xFFFD3A69)
 
-val CategoryBackgroundColor = Color(0x2BBEBEBE)
+val CategoryBackgroundColor = Color(0xFFFFFFFF)
 val CategorySelectedBackgroundColor = Color(0x33FD3A69)
+
+val CategoriesBarBackgroundColor = Color(0xFFFFFFFF)
+
+val CategorySpotColor = Color(0x2BBEBEBE)

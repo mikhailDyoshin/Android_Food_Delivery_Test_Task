@@ -8,32 +8,45 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.fooddeliveryapp.presentation.foodListScreen.state.CategoryState
 import com.example.fooddeliveryapp.ui.theme.CategoryBackgroundColor
 import com.example.fooddeliveryapp.ui.theme.CategorySelectedBackgroundColor
-import com.example.fooddeliveryapp.ui.theme.CategorySelectedTextColor
-import com.example.fooddeliveryapp.ui.theme.CategoryTextColor
+import com.example.fooddeliveryapp.ui.theme.CategorySpotColor
+import com.example.fooddeliveryapp.ui.theme.categorySelectedTextStyle
+import com.example.fooddeliveryapp.ui.theme.categoryTextStyle
 
 @Composable
 fun CategoryItem(state: CategoryState, onClick: (category: CategoryState) -> Unit) {
 
-    val categoryTextColor = if (state.selected) CategorySelectedTextColor else CategoryTextColor
+    val categoryShadowElevation = if (state.selected) 0.dp else 10.dp
+    val categoryTextStyle = if (state.selected) categorySelectedTextStyle else categoryTextStyle
     val categoryBackgroundColor =
         if (state.selected) CategorySelectedBackgroundColor else CategoryBackgroundColor
 
     Column(modifier = Modifier
         .clickable { onClick(state) }
         .padding(horizontal = 4.dp, vertical = 2.dp)
-        .background(color = categoryBackgroundColor, shape = RoundedCornerShape(size = 6.dp))) {
+        .background(color = categoryBackgroundColor, shape = RoundedCornerShape(size = 6.dp))
+        .shadow(
+            elevation = categoryShadowElevation,
+            spotColor = CategorySpotColor,
+            shape = RoundedCornerShape(6.dp)
+        )
+    ) {
         Text(
             text = state.category,
-            color = categoryTextColor,
+            fontSize = categoryTextStyle.fontSize,
+            fontFamily = categoryTextStyle.fontFamily,
+            fontWeight = categoryTextStyle.fontWeight,
+            color = categoryTextStyle.color,
             modifier = Modifier.padding(horizontal = 24.dp, vertical = 8.dp)
         )
     }
 }
+
 
 @Preview
 @Composable
