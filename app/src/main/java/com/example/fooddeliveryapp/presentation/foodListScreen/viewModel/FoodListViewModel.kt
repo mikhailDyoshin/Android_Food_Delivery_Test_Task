@@ -64,7 +64,8 @@ class FoodListViewModel @Inject constructor(
                             data = data.map {
                                 MealState(
                                     title = it.name,
-                                    description = it.description
+                                    description = it.description,
+                                    imageUrl = it.imageUrl,
                                 )
                             })
 
@@ -113,7 +114,8 @@ class FoodListViewModel @Inject constructor(
                             data = data.map {
                                 MealState(
                                     title = it.name,
-                                    description = it.description
+                                    description = it.description,
+                                    imageUrl = it.imageUrl
                                 )
                             })
 
@@ -192,7 +194,8 @@ class FoodListViewModel @Inject constructor(
                 data = listOfMeals.map {
                     MealState(
                         title = it.name,
-                        description = it.description
+                        description = it.description,
+                        imageUrl = it.imageUrl
                     )
                 })
         }
@@ -221,7 +224,8 @@ class FoodListViewModel @Inject constructor(
                 data = listOfMeals.map {
                     MealState(
                         title = it.name,
-                        description = it.description
+                        description = it.description,
+                        imageUrl = it.imageUrl
                     )
                 })
         }

@@ -1,7 +1,9 @@
 package com.example.fooddeliveryapp.presentation.foodListScreen
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -24,6 +26,8 @@ import com.example.fooddeliveryapp.presentation.foodListScreen.components.FoodIt
 import com.example.fooddeliveryapp.presentation.foodListScreen.state.CategoriesListState
 import com.example.fooddeliveryapp.presentation.foodListScreen.state.CategoryState
 import com.example.fooddeliveryapp.presentation.foodListScreen.state.MealState
+import com.example.fooddeliveryapp.ui.theme.MealsListBackgroundColor
+import com.example.fooddeliveryapp.ui.theme.SpacerColor
 
 @Composable
 fun FoodListScreen(
@@ -49,7 +53,10 @@ fun FoodListScreen(
             isCollapsed = isCollapsed.value,
             filterItems = { categoryValue -> filterItems(categoryValue) }
         )
-        LazyColumn(state = listState) {
+        LazyColumn(
+            state = listState,
+            modifier = Modifier.background(color = MealsListBackgroundColor)
+        ) {
             item { ExpandedTopBar() }
             item {
                 CategoryBar(
@@ -64,7 +71,12 @@ fun FoodListScreen(
                 Resource.Status.SUCCESS -> {
                     items(items = mealsListState.data ?: emptyList()) { food ->
                         FoodItem(state = food)
-                        Spacer(modifier = Modifier.height(24.dp))
+                        Spacer(
+                            modifier = Modifier
+                                .height(1.dp)
+                                .fillMaxWidth()
+                                .background(color = SpacerColor)
+                        )
                     }
                 }
 

@@ -19,3 +19,11 @@ val CategorySelectedBackgroundColor = Color(0x33FD3A69)
 val CategoriesBarBackgroundColor = Color(0xFFFFFFFF)
 
 val CategorySpotColor = Color(0x2BBEBEBE)
+
+val MealTitleTextColor = Color(0xFF222831)
+
+val MealDescriptionTextColor = Color(0xFFAAAAAD)
+
+val MealsListBackgroundColor = Color(0xFFFBFBFB)
+
+val SpacerColor = Color(0xFFF3F5F9)
