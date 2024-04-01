@@ -14,6 +14,7 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.example.fooddeliveryapp.common.Constants.COLLAPSED_TOP_BAR_HEIGHT
@@ -70,13 +71,13 @@ fun FoodListScreen(
 
                 Resource.Status.SUCCESS -> {
                     items(items = mealsListState.data ?: emptyList()) { food ->
-                        FoodItem(state = food)
                         Spacer(
                             modifier = Modifier
                                 .height(1.dp)
                                 .fillMaxWidth()
                                 .background(color = SpacerColor)
                         )
+                        FoodItem(state = food)
                     }
                 }
 
@@ -86,5 +87,34 @@ fun FoodListScreen(
             }
 
         }
+    }
+}
+
+@Preview
+@Composable
+fun FoodListScreenPreview() {
+
+    val mealsListState = Resource.success(
+        data = listOf(
+            MealState(title = "Tiramisu", description = "Yummy", imageUrl = ""),
+            MealState(title = "Tiramisu", description = "Yummy", imageUrl = ""),
+            MealState(title = "Tiramisu", description = "Yummy", imageUrl = ""),
+            MealState(title = "Tiramisu", description = "Yummy", imageUrl = ""),
+        )
+    )
+
+    val categoriesListState = Resource.success(
+        data = CategoriesListState(
+            categoriesList = listOf(
+                CategoryState(category = "Sweets", selected = true),
+                CategoryState(category = "Meet", selected = false),
+                CategoryState(category = "Salads", selected = false),
+                CategoryState(category = "Drinks", selected = false),
+            ), selectedCategoryIndex = 0
+        )
+    )
+
+    FoodListScreen(mealsListState = mealsListState, categoriesState = categoriesListState) {
+
     }
 }
