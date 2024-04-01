@@ -231,9 +231,16 @@ class FoodListViewModel @Inject constructor(
         val categoriesList = _categoriesListState.value.data?.categoriesList
         val selectedCategoryIndex = categoriesList?.indexOf(category)
 
+        val newCategoriesList = mutableListOf<CategoryState>()
         if (selectedCategoryIndex != null && selectedCategoryIndex >= 0) {
-            val newCategoriesList = categoriesList.toMutableList()
-            newCategoriesList[selectedCategoryIndex] = category.copy(selected = true)
+            categoriesList.forEach {
+                newCategoriesList.add(
+                    CategoryState(
+                        category = it.category,
+                        selected = categoriesList.indexOf(it) == selectedCategoryIndex
+                    )
+                )
+            }
 
             val newData = _categoriesListState.value.data?.copy(
                 categoriesList = newCategoriesList,
