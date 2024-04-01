@@ -5,11 +5,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.fooddeliveryapp.common.Resource
-import com.example.fooddeliveryapp.domain.models.MealDomainModel
 import com.example.fooddeliveryapp.domain.usecases.GetCategoriesFromDatabaseUseCase
 import com.example.fooddeliveryapp.domain.usecases.GetCategoriesUseCase
 import com.example.fooddeliveryapp.domain.usecases.GetMealsFromDatabaseUseCase
 import com.example.fooddeliveryapp.domain.usecases.GetMealsUseCase
+import com.example.fooddeliveryapp.presentation.foodListScreen.state.CategoriesListState
 import com.example.fooddeliveryapp.presentation.foodListScreen.state.CategoryState
 import com.example.fooddeliveryapp.presentation.foodListScreen.state.MealState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -30,10 +30,10 @@ class FoodListViewModel @Inject constructor(
 
     private val _mealsListState = mutableStateOf(Resource.success(data = listOf<MealState>()))
     private val _categoriesListState =
-        mutableStateOf(Resource.success(data = listOf<CategoryState>()))
+        mutableStateOf(Resource.success(data = CategoriesListState()))
 
     val mealsListState: State<Resource<List<MealState>>> = _mealsListState
-    val categoriesListState: State<Resource<List<CategoryState>>> = _categoriesListState
+    val categoriesListState: State<Resource<CategoriesListState>> = _categoriesListState
 
     init {
         getCategories()
@@ -44,6 +44,7 @@ class FoodListViewModel @Inject constructor(
         getMealsUseCase.execute().onEach { result ->
             when (result.status) {
                 Resource.Status.LOADING -> {
+                    selectCategory(category = category)
                     _mealsListState.value = Resource.loading(
                         data = emptyList()
                     )
@@ -51,11 +52,13 @@ class FoodListViewModel @Inject constructor(
 
                 Resource.Status.SUCCESS -> {
                     if (result.data == null) {
+                        selectCategory(category = category)
                         _mealsListState.value = Resource.error(
                             error = Resource.Error.ERROR_NO_DATA,
                             data = emptyList()
                         )
                     } else {
+                        selectCategory(category = category)
                         val data = result.data.filter { it.category == category.category }
                         _mealsListState.value = Resource.success(
                             data = data.map {
@@ -71,8 +74,9 @@ class FoodListViewModel @Inject constructor(
                 Resource.Status.ERROR -> {
 
                     if (result.error == Resource.Error.ERROR_NO_INTERNET_CONNECTION) {
-                        getFilteredMealsFromDatabase(category = category.category)
+                        getFilteredMealsFromDatabase(category = category)
                     } else {
+                        selectCategory(category = category)
                         val error = result.error ?: Resource.Error.ERROR_UNDEFINED
 
                         _mealsListState.value = Resource.error(
@@ -86,7 +90,6 @@ class FoodListViewModel @Inject constructor(
             }
         }.launchIn(viewModelScope)
     }
-
 
 
     private fun getMeals() {
@@ -141,7 +144,7 @@ class FoodListViewModel @Inject constructor(
             when (result.status) {
                 Resource.Status.LOADING -> {
                     _categoriesListState.value = Resource.loading(
-                        data = emptyList()
+                        data = CategoriesListState()
                     )
                 }
 
@@ -149,16 +152,18 @@ class FoodListViewModel @Inject constructor(
                     if (result.data == null) {
                         _categoriesListState.value = Resource.error(
                             error = Resource.Error.ERROR_NO_DATA,
-                            data = emptyList()
+                            data = CategoriesListState()
                         )
                     } else {
                         val data = result.data
+                        val categoriesList = data.map {
+                            CategoryState(
+                                category = it.category,
+                            )
+                        }
                         _categoriesListState.value = Resource.success(
-                            data = data.map {
-                                CategoryState(
-                                    category = it.category,
-                                )
-                            })
+                            data = CategoriesListState(categoriesList = categoriesList)
+                        )
 
                     }
                 }
@@ -171,7 +176,7 @@ class FoodListViewModel @Inject constructor(
 
                         _categoriesListState.value = Resource.error(
                             error = error,
-                            data = emptyList()
+                            data = CategoriesListState()
                         )
                     }
 
@@ -196,18 +201,22 @@ class FoodListViewModel @Inject constructor(
     private fun getCategoriesFromDatabase() {
         viewModelScope.launch(Dispatchers.IO) {
             val listOfCategories = getCategoriesFromDatabaseUseCase.execute()
+            val categoriesListState = CategoriesListState(categoriesList = listOfCategories.map {
+                CategoryState(
+                    category = it.category
+                )
+            })
             _categoriesListState.value = Resource.success(
-                data = listOfCategories.map {
-                    CategoryState(
-                        category = it.category
-                    )
-                })
+                data = categoriesListState
+            )
         }
     }
 
-    private fun getFilteredMealsFromDatabase(category: String) {
+    private fun getFilteredMealsFromDatabase(category: CategoryState) {
         viewModelScope.launch(Dispatchers.IO) {
-            val listOfMeals = getMealsFromDatabaseUseCase.execute().filter { it.category == category }
+            selectCategory(category = category)
+            val listOfMeals =
+                getMealsFromDatabaseUseCase.execute().filter { it.category == category.category }
             _mealsListState.value = Resource.success(
                 data = listOfMeals.map {
                     MealState(
@@ -215,6 +224,23 @@ class FoodListViewModel @Inject constructor(
                         description = it.description
                     )
                 })
+        }
+    }
+
+    private fun selectCategory(category: CategoryState) {
+        val categoriesList = _categoriesListState.value.data?.categoriesList
+        val selectedCategoryIndex = categoriesList?.indexOf(category)
+
+        if (selectedCategoryIndex != null && selectedCategoryIndex >= 0) {
+            val newCategoriesList = categoriesList.toMutableList()
+            newCategoriesList[selectedCategoryIndex] = category.copy(selected = true)
+
+            val newData = _categoriesListState.value.data?.copy(
+                categoriesList = newCategoriesList,
+                selectedCategoryIndex = selectedCategoryIndex
+            )
+
+            _categoriesListState.value = _categoriesListState.value.copy(data = newData)
         }
     }
 }

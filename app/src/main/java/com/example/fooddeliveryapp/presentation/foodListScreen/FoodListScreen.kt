@@ -21,13 +21,14 @@ import com.example.fooddeliveryapp.presentation.foodListScreen.components.Catego
 import com.example.fooddeliveryapp.presentation.foodListScreen.components.ExpandedTopBar
 import com.example.fooddeliveryapp.presentation.foodListScreen.components.CollapsedTopBar
 import com.example.fooddeliveryapp.presentation.foodListScreen.components.FoodItem
+import com.example.fooddeliveryapp.presentation.foodListScreen.state.CategoriesListState
 import com.example.fooddeliveryapp.presentation.foodListScreen.state.CategoryState
 import com.example.fooddeliveryapp.presentation.foodListScreen.state.MealState
 
 @Composable
 fun FoodListScreen(
     mealsListState: Resource<List<MealState>>,
-    categoriesState: Resource<List<CategoryState>>,
+    categoriesState: Resource<CategoriesListState>,
     filterItems: (category: CategoryState) -> Unit
 ) {
     val listState = rememberLazyListState()
