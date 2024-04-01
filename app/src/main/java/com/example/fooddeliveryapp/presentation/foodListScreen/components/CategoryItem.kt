@@ -21,30 +21,38 @@ import com.example.fooddeliveryapp.ui.theme.categoryTextStyle
 @Composable
 fun CategoryItem(state: CategoryState, onClick: (category: CategoryState) -> Unit) {
 
-    val categoryShadowElevation = if (state.selected) 0.dp else 10.dp
+    val categoryShadowElevation = if (state.selected) 0.dp else 15.dp
     val categoryTextStyle = if (state.selected) categorySelectedTextStyle else categoryTextStyle
     val categoryBackgroundColor =
         if (state.selected) CategorySelectedBackgroundColor else CategoryBackgroundColor
 
-    Column(modifier = Modifier
-        .clickable { onClick(state) }
-        .padding(horizontal = 4.dp, vertical = 2.dp)
-        .background(color = categoryBackgroundColor, shape = RoundedCornerShape(size = 6.dp))
-        .shadow(
+    Column(
+        modifier = Modifier.shadow(
             elevation = categoryShadowElevation,
             spotColor = CategorySpotColor,
             shape = RoundedCornerShape(6.dp)
         )
     ) {
-        Text(
-            text = state.category,
-            fontSize = categoryTextStyle.fontSize,
-            fontFamily = categoryTextStyle.fontFamily,
-            fontWeight = categoryTextStyle.fontWeight,
-            color = categoryTextStyle.color,
-            modifier = Modifier.padding(horizontal = 24.dp, vertical = 8.dp)
-        )
+        Column(modifier = Modifier
+            .clickable { onClick(state) }
+            .padding(horizontal = 4.dp, vertical = 2.dp)
+            .background(
+                color = categoryBackgroundColor,
+                shape = RoundedCornerShape(size = 6.dp)
+            )
+
+        ) {
+            Text(
+                text = state.category,
+                fontSize = categoryTextStyle.fontSize,
+                fontFamily = categoryTextStyle.fontFamily,
+                fontWeight = categoryTextStyle.fontWeight,
+                color = categoryTextStyle.color,
+                modifier = Modifier.padding(horizontal = 24.dp, vertical = 8.dp)
+            )
+        }
     }
+
 }
 
 

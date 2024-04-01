@@ -41,7 +41,7 @@ fun CategoryBar(
         modifier = Modifier
             .fillMaxWidth()
             .background(color = CategoriesBarBackgroundColor)
-            .padding(all = 16.dp)
+            .padding(horizontal = 8.dp, vertical = 16.dp)
     ) {
         when (categories.status) {
             Resource.Status.LOADING -> {
