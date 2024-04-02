@@ -12,6 +12,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
@@ -24,6 +25,7 @@ import com.example.fooddeliveryapp.presentation.foodListScreen.components.Catego
 import com.example.fooddeliveryapp.presentation.foodListScreen.components.ExpandedTopBar
 import com.example.fooddeliveryapp.presentation.foodListScreen.components.CollapsedTopBar
 import com.example.fooddeliveryapp.presentation.foodListScreen.components.FoodItem
+import com.example.fooddeliveryapp.presentation.foodListScreen.components.TabBar
 import com.example.fooddeliveryapp.presentation.foodListScreen.state.CategoriesListState
 import com.example.fooddeliveryapp.presentation.foodListScreen.state.CategoryState
 import com.example.fooddeliveryapp.presentation.foodListScreen.state.MealState
@@ -87,6 +89,7 @@ fun FoodListScreen(
             }
 
         }
+        TabBar(modifier = Modifier.zIndex(2f).align(Alignment.BottomCenter))
     }
 }
 

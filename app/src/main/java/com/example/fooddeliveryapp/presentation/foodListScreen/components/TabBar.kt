@@ -13,7 +13,7 @@ import com.example.fooddeliveryapp.presentation.foodListScreen.state.TabBarButto
 import com.example.fooddeliveryapp.ui.theme.TabBarBackgroundColor
 
 @Composable
-fun TabBar() {
+fun TabBar(modifier: Modifier = Modifier) {
 
     val menuButtonsStates = listOf(
         TabBarButtonState(iconId = R.drawable.menu_icon, text = "Menu", active = true),
@@ -22,7 +22,7 @@ fun TabBar() {
     )
 
     Row(
-        modifier = Modifier.fillMaxWidth().background(color = TabBarBackgroundColor),
+        modifier = modifier.fillMaxWidth().background(color = TabBarBackgroundColor),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
