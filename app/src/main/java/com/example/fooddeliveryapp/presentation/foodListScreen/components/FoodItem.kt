@@ -27,49 +27,52 @@ import com.example.fooddeliveryapp.ui.theme.MealDescriptionTextColor
 import com.example.fooddeliveryapp.ui.theme.MealTitleTextColor
 
 @Composable
-fun FoodItem(state: MealState) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 16.dp, horizontal = 16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
+fun FoodItem(state: MealState, modifier: Modifier = Modifier) {
+    Column(modifier = modifier) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 16.dp, horizontal = 16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
 
-        Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
-            AsyncImage(
-                model = state.imageUrl,
-                contentDescription = "Meal image",
-                modifier = Modifier
-                    .width(135.dp)
-                    .height(135.dp)
-                    .background(color = Color.Gray)
-            )
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth(0.9f)
-                    .height(135.dp)
-            ) {
-                Text(
-                    text = state.title,
-                    color = MealTitleTextColor,
-                    fontSize = 16.sp,
-                    fontStyle = FontStyle(R.font.roboto_bold),
-                    fontWeight = FontWeight(700),
-                    modifier = Modifier.padding(bottom = 8.dp)
+            Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
+                AsyncImage(
+                    model = state.imageUrl,
+                    contentDescription = "Meal image",
+                    modifier = Modifier
+                        .width(135.dp)
+                        .height(135.dp)
+                        .background(color = Color.Gray)
                 )
-                Text(
-                    text = state.description,
-                    color = MealDescriptionTextColor,
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight(400),
-                    fontFamily = FontFamily.SansSerif,
-                    maxLines = 4,
-                    overflow = TextOverflow.Ellipsis
-                )
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth(0.9f)
+                        .height(135.dp)
+                ) {
+                    Text(
+                        text = state.title,
+                        color = MealTitleTextColor,
+                        fontSize = 16.sp,
+                        fontStyle = FontStyle(R.font.roboto_bold),
+                        fontWeight = FontWeight(700),
+                        modifier = Modifier.padding(bottom = 8.dp)
+                    )
+                    Text(
+                        text = state.description,
+                        color = MealDescriptionTextColor,
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight(400),
+                        fontFamily = FontFamily.SansSerif,
+                        maxLines = 4,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
             }
-        }
 
+        }
     }
+
 }
 
 @Preview
@@ -81,5 +84,18 @@ fun FoodItemPreview() {
             description = "Delicious food. For every day for life. For you and every one else. Eat and feel good",
             imageUrl = ""
         )
+    )
+}
+
+@Preview
+@Composable
+fun FoodItemLastPreview() {
+    FoodItem(
+        state = MealState(
+            title = "Food",
+            description = "Delicious food. For every day for life. For you and every one else. Eat and feel good",
+            imageUrl = ""
+        ),
+        modifier = Modifier.padding(bottom = 40.dp)
     )
 }
