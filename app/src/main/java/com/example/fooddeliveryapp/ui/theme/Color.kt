@@ -29,3 +29,11 @@ val MealsListBackgroundColor = Color(0xFFFBFBFB)
 val SpacerColor = Color(0xFFF3F5F9)
 
 val NavigationBarBackgroundColor = Color(0xFFFFFFFF)
+
+val TabBarButtonTextColor = Color(0xFF7B7B7B)
+
+val TabBarButtonIconColor = Color(0xFF7B7B7B)
+
+val TabBarActiveButtonTextColor = Color(0xFFFD3A69)
+
+val TabBarActiveButtonIconColor = Color(0xFFFD3A69)
