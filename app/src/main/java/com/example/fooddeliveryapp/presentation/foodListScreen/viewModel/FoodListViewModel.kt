@@ -19,6 +19,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import java.util.Locale.filter
 import javax.inject.Inject
 
 @HiltViewModel
@@ -61,7 +62,7 @@ class FoodListViewModel @Inject constructor(
                         )
                     } else {
                         selectCategory(category = category)
-                        val data = result.data.filter { it.category == category.category }
+                        val data = filterByCategory(result.data, category)
                         _mealsListState.value = Resource.success(
                             data = mealModelMapper(data)
                         )
@@ -198,8 +199,7 @@ class FoodListViewModel @Inject constructor(
     private fun getFilteredMealsFromDatabase(category: CategoryState) {
         viewModelScope.launch(Dispatchers.IO) {
             selectCategory(category = category)
-            val listOfMeals =
-                getMealsFromDatabaseUseCase.execute().filter { it.category == category.category }
+            val listOfMeals = filterByCategory(getMealsFromDatabaseUseCase.execute(), category)
             _mealsListState.value = Resource.success(
                 data = mealModelMapper(listOfMeals)
             )
@@ -241,10 +241,23 @@ class FoodListViewModel @Inject constructor(
     }
 
     private fun categoryModelMapper(categoriesList: List<CategoryDomainModel>): List<CategoryState> {
-        return categoriesList.map {
+        val newCategoriesList = mutableListOf(CategoryState(category = "All", selected = true))
+        newCategoriesList.addAll(categoriesList.map {
             CategoryState(
                 category = it.category
             )
+        })
+        return newCategoriesList
+    }
+
+    private fun filterByCategory(
+        mealsList: List<MealDomainModel>,
+        category: CategoryState
+    ): List<MealDomainModel> {
+        return if (category.category == "All") {
+            mealsList
+        } else {
+            mealsList.filter { it.category == category.category }
         }
     }
 }
