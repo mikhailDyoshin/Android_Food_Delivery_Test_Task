@@ -5,6 +5,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.fooddeliveryapp.common.Resource
+import com.example.fooddeliveryapp.domain.models.CategoryDomainModel
+import com.example.fooddeliveryapp.domain.models.MealDomainModel
 import com.example.fooddeliveryapp.domain.usecases.GetCategoriesFromDatabaseUseCase
 import com.example.fooddeliveryapp.domain.usecases.GetCategoriesUseCase
 import com.example.fooddeliveryapp.domain.usecases.GetMealsFromDatabaseUseCase
@@ -61,13 +63,8 @@ class FoodListViewModel @Inject constructor(
                         selectCategory(category = category)
                         val data = result.data.filter { it.category == category.category }
                         _mealsListState.value = Resource.success(
-                            data = data.map {
-                                MealState(
-                                    title = it.name,
-                                    description = it.description,
-                                    imageUrl = it.imageUrl,
-                                )
-                            })
+                            data = mealModelMapper(data)
+                        )
 
                     }
                 }
@@ -111,13 +108,8 @@ class FoodListViewModel @Inject constructor(
                     } else {
                         val data = result.data
                         _mealsListState.value = Resource.success(
-                            data = data.map {
-                                MealState(
-                                    title = it.name,
-                                    description = it.description,
-                                    imageUrl = it.imageUrl
-                                )
-                            })
+                            data = mealModelMapper(data)
+                        )
 
                     }
                 }
@@ -158,11 +150,7 @@ class FoodListViewModel @Inject constructor(
                         )
                     } else {
                         val data = result.data
-                        val categoriesList = data.map {
-                            CategoryState(
-                                category = it.category,
-                            )
-                        }
+                        val categoriesList = categoryModelMapper(data)
                         _categoriesListState.value = Resource.success(
                             data = CategoriesListState(categoriesList = categoriesList)
                         )
@@ -191,24 +179,16 @@ class FoodListViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             val listOfMeals = getMealsFromDatabaseUseCase.execute()
             _mealsListState.value = Resource.success(
-                data = listOfMeals.map {
-                    MealState(
-                        title = it.name,
-                        description = it.description,
-                        imageUrl = it.imageUrl
-                    )
-                })
+                data = mealModelMapper(listOfMeals)
+            )
         }
     }
 
     private fun getCategoriesFromDatabase() {
         viewModelScope.launch(Dispatchers.IO) {
             val listOfCategories = getCategoriesFromDatabaseUseCase.execute()
-            val categoriesListState = CategoriesListState(categoriesList = listOfCategories.map {
-                CategoryState(
-                    category = it.category
-                )
-            })
+            val categoriesListState =
+                CategoriesListState(categoriesList = categoryModelMapper(listOfCategories))
             _categoriesListState.value = Resource.success(
                 data = categoriesListState
             )
@@ -221,13 +201,8 @@ class FoodListViewModel @Inject constructor(
             val listOfMeals =
                 getMealsFromDatabaseUseCase.execute().filter { it.category == category.category }
             _mealsListState.value = Resource.success(
-                data = listOfMeals.map {
-                    MealState(
-                        title = it.name,
-                        description = it.description,
-                        imageUrl = it.imageUrl
-                    )
-                })
+                data = mealModelMapper(listOfMeals)
+            )
         }
     }
 
@@ -252,6 +227,24 @@ class FoodListViewModel @Inject constructor(
             )
 
             _categoriesListState.value = _categoriesListState.value.copy(data = newData)
+        }
+    }
+
+    private fun mealModelMapper(mealsList: List<MealDomainModel>): List<MealState> {
+        return mealsList.map {
+            MealState(
+                title = it.name,
+                description = it.description,
+                imageUrl = it.imageUrl
+            )
+        }
+    }
+
+    private fun categoryModelMapper(categoriesList: List<CategoryDomainModel>): List<CategoryState> {
+        return categoriesList.map {
+            CategoryState(
+                category = it.category
+            )
         }
     }
 }
