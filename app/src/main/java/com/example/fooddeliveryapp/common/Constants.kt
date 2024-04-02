@@ -4,7 +4,7 @@ import androidx.compose.ui.unit.dp
 
 object Constants {
     val EXPANDED_TOP_BAR_HEIGHT = 200.dp
-    val COLLAPSED_TOP_BAR_HEIGHT = 0.dp
+    val COLLAPSED_TOP_BAR_HEIGHT = 80.dp
 
     const val BASE_URL = "https://themealdb.com/api/json/v1/1/"
     const val GET_MEALS_PARAM = "search.php?s"
