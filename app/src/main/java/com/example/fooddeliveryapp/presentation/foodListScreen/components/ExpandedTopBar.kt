@@ -7,20 +7,20 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import com.example.fooddeliveryapp.R
 import com.example.fooddeliveryapp.common.Constants.EXPANDED_TOP_BAR_HEIGHT
 
 @Composable
 fun ExpandedTopBar() {
 
-    val tempList = List(2) { 0 }
+    val imagesList =
+        listOf(R.drawable.italian_food, R.drawable.japanese_food, R.drawable.russian_food)
 
     Box(
         modifier = Modifier
@@ -31,8 +31,16 @@ fun ExpandedTopBar() {
         contentAlignment = Alignment.BottomStart
     ) {
         LazyRow {
-            items(tempList) {
-                AnnouncementItem()
+            items(imagesList) {
+                if (it == imagesList.last()) {
+                    AnnouncementItem(
+                        it,
+                        modifier = Modifier.padding(end = 16.dp)
+                    )
+                } else {
+                    AnnouncementItem(it)
+                }
+
             }
         }
     }
