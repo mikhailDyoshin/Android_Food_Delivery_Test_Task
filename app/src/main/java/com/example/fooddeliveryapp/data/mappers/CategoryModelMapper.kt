@@ -7,8 +7,9 @@ import com.example.fooddeliveryapp.domain.models.CategoryDomainModel
 class CategoryModelMapper : ModelMapper<CategoryResponse, CategoryDomainModel, CategoryDatabaseModel> {
 
     override fun apiToDatabase(apiResponse: CategoryResponse): List<CategoryDatabaseModel> {
-        return apiResponse.categories.map { meal ->
+        return apiResponse.categories.mapIndexed { index, meal ->
             CategoryDatabaseModel(
+                id = index,
                 category = meal.strCategory ?: "",
             )
         }

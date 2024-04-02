@@ -9,7 +9,7 @@ import com.example.fooddeliveryapp.data.storage.database.models.MealDatabaseMode
 @Dao
 interface MealsDao : DaoInterface<MealDatabaseModel> {
 
-    @Insert(onConflict = OnConflictStrategy.ABORT)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     override suspend fun insert(model: MealDatabaseModel): Long
 
     @Query("SELECT * FROM meals")

@@ -8,7 +8,7 @@ import com.example.fooddeliveryapp.data.storage.database.models.CategoryDatabase
 
 @Dao
 interface CategoriesDao : DaoInterface<CategoryDatabaseModel> {
-    @Insert(onConflict = OnConflictStrategy.ABORT)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     override suspend fun insert(model: CategoryDatabaseModel): Long
 
     @Query("SELECT * FROM categories")
