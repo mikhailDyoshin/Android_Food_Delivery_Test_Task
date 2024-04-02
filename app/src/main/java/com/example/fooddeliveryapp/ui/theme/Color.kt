@@ -37,3 +37,5 @@ val TabBarButtonIconColor = Color(0xFF7B7B7B)
 val TabBarActiveButtonTextColor = Color(0xFFFD3A69)
 
 val TabBarActiveButtonIconColor = Color(0xFFFD3A69)
+
+val TabBarBackgroundColor = Color(0xFFF0F0F0)
